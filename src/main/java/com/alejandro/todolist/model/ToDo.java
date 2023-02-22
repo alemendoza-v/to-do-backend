@@ -3,11 +3,6 @@ package com.alejandro.todolist.model;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
-
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 
