@@ -1,14 +1,23 @@
 package com.alejandro.todolist.dao;
 
 import java.util.UUID;
+import java.util.List;
+import java.util.Optional;
 
 import com.alejandro.todolist.model.ToDo;
 
 public interface ToDoDao {
-    ToDo insertToDo(UUID id, ToDo todo);
+    ToDo createToDo(ToDo todo);
 
-    default ToDo createToDo(ToDo toDo) {
-        UUID id = UUID.randomUUID();
-        return insertToDo(id, toDo);
-    }
+    List<ToDo> getAllToDos();
+
+    Optional<ToDo> getToDoById(UUID id); 
+
+    void deleteToDoById(UUID id);
+
+    ToDo updateToDoById(UUID id, ToDo newToDo);
+
+    ToDo setToDoAsDone(UUID id);
+
+    ToDo setToDoAsUndone(UUID id);
 }
