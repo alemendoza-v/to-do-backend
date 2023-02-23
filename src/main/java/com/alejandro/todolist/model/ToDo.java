@@ -1,6 +1,7 @@
 package com.alejandro.todolist.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ToDo {
     private UUID id;
-
+    
     @NotBlank
     private String text;
 
@@ -21,9 +22,9 @@ public class ToDo {
     private boolean isDone;
 
     @Nullable
-    private LocalDate doneDate;
+    private LocalDateTime doneDate;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Nonnull
     private int priority;
@@ -36,7 +37,7 @@ public class ToDo {
         this.text = text;
         this.priority = priority;
         this.isDone = false;
-        this.createdAt = LocalDate.now();
+        this.createdAt = LocalDateTime.now();
         this.dueDate = dueDate;
     }
 
@@ -57,11 +58,11 @@ public class ToDo {
         return isDone;
     }
 
-    public LocalDate getDoneDate() {
+    public LocalDateTime getDoneDate() {
         return doneDate;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -73,7 +74,7 @@ public class ToDo {
         this.isDone = isDone;
     }
 
-    public void setDoneDate(LocalDate doneDate) {
+    public void setDoneDate(LocalDateTime doneDate) {
         this.doneDate = doneDate;
     }
 }

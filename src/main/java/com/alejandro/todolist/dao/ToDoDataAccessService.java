@@ -1,10 +1,12 @@
 package com.alejandro.todolist.dao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +26,32 @@ public class ToDoDataAccessService implements ToDoDao{
     @Override
     public List<ToDo> getAllToDos() {
         return DB;
+    }
+
+    @Override  
+    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, int page) {
+        List<ToDo> sortedDB = DB;
+        if(sort_by != null) {
+            if (sort_by.contains("dueDate") && sort_by.contains("priority")) {
+                sortedDB = DB.stream()
+                            .sorted(
+                                Comparator.comparing(ToDo::getDueDate,
+                                Comparator.nullsLast(Comparator.reverseOrder()))
+                                .thenComparing(ToDo::getPriority).reversed())
+                            .collect(Collectors.toList());
+            } else if (sort_by.contains("dueDate")) {
+                sortedDB = DB.stream()
+                            .sorted(
+                                Comparator.comparing(ToDo::getDueDate,
+                                Comparator.nullsLast(Comparator.naturalOrder())))
+                            .collect(Collectors.toList());
+            } else if (sort_by.contains("priority")) {
+                sortedDB = DB.stream()
+                            .sorted((o1,o2)->{return o2.getPriority() - o1.getPriority();})
+                            .collect(Collectors.toList());
+            }
+        }
+        return sortedDB;
     }
 
     @Override
@@ -63,7 +91,7 @@ public class ToDoDataAccessService implements ToDoDao{
         return getToDoById(id)
             .map(toDo -> {
                 toDo.setDone(true);
-                toDo.setDoneDate(LocalDate.now());
+                toDo.setDoneDate(LocalDateTime.now());
                 return toDo;
             })
             .orElse(null);

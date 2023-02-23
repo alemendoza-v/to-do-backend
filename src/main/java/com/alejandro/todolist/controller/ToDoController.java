@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alejandro.todolist.model.ToDo;
@@ -32,8 +33,11 @@ public class ToDoController {
     }
 
     @GetMapping
-    public List<ToDo> getAllToDos() {
-        return toDoService.getAllToDos();
+    public List<ToDo> getAllToDos(@RequestParam(required = false) String text,
+                                  @RequestParam(required = false) List<String> sort_by,
+                                  @RequestParam(required = false) String order_by,
+                                  @RequestParam(defaultValue = "0") int page) {
+        return toDoService.getAllToDos(text, sort_by, order_by, page);
     }
 
     @DeleteMapping(path = "{id}")

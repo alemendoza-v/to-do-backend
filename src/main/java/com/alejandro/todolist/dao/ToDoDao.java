@@ -11,6 +11,8 @@ public interface ToDoDao {
 
     List<ToDo> getAllToDos();
 
+    List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, int page);
+
     Optional<ToDo> getToDoById(UUID id); 
 
     void deleteToDoById(UUID id);
