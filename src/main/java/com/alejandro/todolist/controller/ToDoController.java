@@ -33,11 +33,13 @@ public class ToDoController {
     }
 
     @GetMapping
-    public List<ToDo> getAllToDos(@RequestParam(required = false) String text,
+    public List<ToDo> getAllToDos(@RequestParam(defaultValue = "") String text,
                                   @RequestParam(required = false) List<String> sort_by,
-                                  @RequestParam(required = false) String order_by,
+                                  @RequestParam(defaultValue = "desc") String order_by,
+                                  @RequestParam(required = false) String filter_by,
+                                  @RequestParam(defaultValue = "0") int priority,
                                   @RequestParam(defaultValue = "0") int page) {
-        return toDoService.getAllToDos(text, sort_by, order_by, page);
+        return toDoService.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
     }
 
     @DeleteMapping(path = "{id}")

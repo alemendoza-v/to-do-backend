@@ -24,8 +24,8 @@ public class ToDoService {
         return toDoDao.createToDo(toDo);
     }
 
-    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, int page) {
-        return toDoDao.getAllToDos(text, sort_by, order_by, page);
+    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, String filter_by, int priority, int page) {
+        return toDoDao.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
     }
 
     public void deleteToDo(UUID id) {
