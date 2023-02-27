@@ -39,6 +39,14 @@ public class ToDoDataAccessService implements ToDoDao{
     @Override  
     public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, String filter_by, int priority, int page) {
         List<ToDo> returnList = DB;
+        int startIndex = page * 10;
+        int endIndex = 0;
+        if ((page * 10) + 9 <= DB.size()) {
+            endIndex = (page * 10) + 10;
+        } else {
+            endIndex = DB.size();
+        }
+        
 
         if (sort_by != null) {
             if (sort_by.contains("dueDate") && sort_by.contains("priority")) {
@@ -93,7 +101,7 @@ public class ToDoDataAccessService implements ToDoDao{
                 returnList = filter(byPriority, returnList);
             }
         }
-        return returnList;
+        return returnList.subList(startIndex, endIndex);
     }
 
     @Override
