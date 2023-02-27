@@ -35,10 +35,11 @@ public class ToDo {
                 @JsonProperty("dueDate") LocalDate dueDate) {
         this.id = UUID.randomUUID();
         this.text = text;
-        this.priority = priority;
-        this.isDone = false;
-        this.createdAt = LocalDateTime.now();
         this.dueDate = dueDate;
+        this.isDone = false;
+        this.doneDate = null;
+        this.createdAt = LocalDateTime.now();
+        this.priority = priority;
     }
 
     // Getters

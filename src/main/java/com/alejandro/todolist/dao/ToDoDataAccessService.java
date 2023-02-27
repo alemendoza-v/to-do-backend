@@ -37,7 +37,7 @@ public class ToDoDataAccessService implements ToDoDao{
     } 
 
     @Override  
-    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by,  String filter_by, int priority, int page) {
+    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, String filter_by, int priority, int page) {
         List<ToDo> returnList = DB;
 
         if (sort_by != null) {
