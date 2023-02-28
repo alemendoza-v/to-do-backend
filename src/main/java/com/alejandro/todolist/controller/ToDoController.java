@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alejandro.todolist.model.ToDo;
 import com.alejandro.todolist.service.ToDoService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +30,7 @@ public class ToDoController {
     }
 
     @PostMapping
-    public ToDo addToDo(@RequestBody ToDo toDo) {
+    public ToDo addToDo(@Valid @RequestBody ToDo toDo) {
         return toDoService.createToDo(toDo);
     }
 

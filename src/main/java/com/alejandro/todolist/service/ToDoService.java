@@ -43,4 +43,8 @@ public class ToDoService {
     public ToDo setToDoAsUndone(UUID id) {
         return toDoDao.setToDoAsUndone(id);
     }
+
+    public void clearDB() {
+        toDoDao.clearDB();
+    }
 }

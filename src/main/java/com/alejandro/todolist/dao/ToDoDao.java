@@ -22,4 +22,6 @@ public interface ToDoDao {
     ToDo setToDoAsDone(UUID id);
 
     ToDo setToDoAsUndone(UUID id);
+
+    void clearDB();
 }
