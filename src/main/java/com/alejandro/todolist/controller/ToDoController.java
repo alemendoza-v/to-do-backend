@@ -22,12 +22,9 @@ import java.util.UUID;
 @RequestMapping(path="api/v1/todos")
 @RestController
 public class ToDoController {
-    private final ToDoService toDoService;
 
     @Autowired
-    public ToDoController(ToDoService toDoService) {
-        this.toDoService = toDoService;
-    }
+    private ToDoService toDoService;
 
     @PostMapping
     public ToDo addToDo(@Valid @RequestBody ToDo toDo) {
@@ -37,7 +34,7 @@ public class ToDoController {
     @GetMapping
     public List<ToDo> getAllToDos(@RequestParam(defaultValue = "") String text,
                                   @RequestParam(required = false) List<String> sort_by,
-                                  @RequestParam(defaultValue = "desc") String order_by,
+                                  @RequestParam(required = false) List<String> order_by,
                                   @RequestParam(required = false) String filter_by,
                                   @RequestParam(defaultValue = "0") int priority,
                                   @RequestParam(defaultValue = "0") int page) {

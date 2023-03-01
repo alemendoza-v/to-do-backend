@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alejandro.todolist.model.ToDo;
+import com.alejandro.todolist.Factory.SortingFactory;
 
 @Repository("dao")
 public class ToDoDataAccessService implements ToDoDao{
     private static List<ToDo> DB = new ArrayList<>();
+
+    @Autowired
+    private SortingFactory sortingFactory;
 
     @Override
     public ToDo createToDo(ToDo toDo) {
@@ -37,43 +41,11 @@ public class ToDoDataAccessService implements ToDoDao{
     } 
 
     @Override  
-    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, String filter_by, int priority, int page) {
+    public List<ToDo> getAllToDos(String text, List<String> sort_by, List<String> order_by, String filter_by, int priority, int page) {
         List<ToDo> returnList = DB;
 
         if (sort_by != null) {
-            if (sort_by.contains("dueDate") && sort_by.contains("priority")) {
-                returnList = DB.stream()
-                                .sorted(
-                                    Comparator.comparing(ToDo::getDueDate,
-                                    Comparator.nullsLast(Comparator.reverseOrder()))
-                                    .thenComparing(ToDo::getPriority).reversed())
-                                .collect(Collectors.toList());
-            } else if (sort_by.contains("dueDate")) {
-                if (order_by.contains("asc")) {
-                    returnList = DB.stream()
-                                .sorted(
-                                    Comparator.comparing(ToDo::getDueDate,
-                                    Comparator.nullsLast(Comparator.naturalOrder())))
-                                .collect(Collectors.toList());
-                } else {
-                    returnList = DB.stream()
-                                .sorted(
-                                    Comparator.comparing(ToDo::getDueDate,
-                                    Comparator.nullsLast(Comparator.reverseOrder())))
-                                .collect(Collectors.toList());
-                }
-                
-            } else if (sort_by.contains("priority")) {
-                if (order_by.contains("desc")) {
-                    returnList = DB.stream()
-                                .sorted((o1,o2)->{return o2.getPriority() - o1.getPriority();})
-                                .collect(Collectors.toList());
-                } else {
-                    returnList = DB.stream()
-                                .sorted((o1,o2)->{return o1.getPriority() - o2.getPriority();})
-                                .collect(Collectors.toList());
-                }
-            }
+            returnList = sortingFactory.getStrategy(sort_by).getSortedList(returnList, order_by);
         }
 
         if (filter_by != null) {

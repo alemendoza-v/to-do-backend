@@ -1,7 +1,6 @@
 package com.alejandro.todolist.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.alejandro.todolist.dao.ToDoDao;
@@ -13,18 +12,14 @@ import java.util.UUID;
 @Service
 public class ToDoService {
 
-    private final ToDoDao toDoDao;
-
     @Autowired
-    public ToDoService(@Qualifier("dao") ToDoDao toDoDao) {
-        this.toDoDao = toDoDao;
-    }
+    private ToDoDao toDoDao;
 
     public ToDo createToDo(ToDo toDo) {
         return toDoDao.createToDo(toDo);
     }
 
-    public List<ToDo> getAllToDos(String text, List<String> sort_by, String order_by, String filter_by, int priority, int page) {
+    public List<ToDo> getAllToDos(String text, List<String> sort_by, List<String> order_by, String filter_by, int priority, int page) {
         return toDoDao.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
     }
 
