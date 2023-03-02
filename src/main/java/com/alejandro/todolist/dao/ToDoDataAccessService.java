@@ -101,8 +101,10 @@ public class ToDoDataAccessService implements ToDoDao{
                 .map(toDo -> {
                     int indexOfToDo = DB.indexOf(toDo);
                     if (indexOfToDo >= 0) {
-                        DB.set(indexOfToDo, newToDo);
-                        return newToDo;
+                        toDo.setText(newToDo.getText());
+                        toDo.setPriority(newToDo.getPriority());
+                        toDo.setDueDate(newToDo.getDueDate());
+                        return toDo;
                     }
                     return null;
                 })

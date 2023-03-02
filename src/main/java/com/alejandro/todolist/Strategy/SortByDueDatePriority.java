@@ -6,24 +6,24 @@ import java.util.Comparator;
 import com.alejandro.todolist.model.ToDo;
 
 public class SortByDueDatePriority implements SortingInterface {
-    // private Comparator<ToDo> priorityComparator = Comparator.comparing(ToDo::getPriority);
+    private Comparator<ToDo> priorityComparator = Comparator.comparing(ToDo::getPriority);
     // private Comparator<ToDo> comp = Comparator.nullsLast(Comparator.comparing(ToDo::getDueDate)).thenComparing(priorityComparator);
     private Comparator<ToDo> dueDateDescPriorityDesc = Comparator.comparing(
                                                         ToDo::getDueDate, 
                                                         Comparator.nullsLast(Comparator.reverseOrder()))
-                                                        .thenComparingInt(ToDo::getPriority);
+                                                        .thenComparing(priorityComparator.reversed());
     private Comparator<ToDo> dueDateAscPriorityDesc = Comparator.comparing(
                                                         ToDo::getDueDate, 
                                                         Comparator.nullsLast(Comparator.naturalOrder()))
-                                                        .thenComparingInt(ToDo::getPriority);
+                                                        .thenComparing(priorityComparator.reversed());
     private Comparator<ToDo> dueDateDescPriorityAsc = Comparator.comparing(
                                                         ToDo::getDueDate, 
                                                         Comparator.nullsLast(Comparator.reverseOrder()))
-                                                        .thenComparingInt(ToDo::getPriority).reversed();
+                                                        .thenComparing(priorityComparator);
     private Comparator<ToDo> dueDateAscPriorityAsc = Comparator.comparing(
                                                         ToDo::getDueDate, 
                                                         Comparator.nullsLast(Comparator.naturalOrder()))
-                                                        .thenComparingInt(ToDo::getPriority).reversed();
+                                                        .thenComparing(priorityComparator);
 
     @Override
     public List<ToDo> getSortedList(List<ToDo> toDos, List<String> order_by) {

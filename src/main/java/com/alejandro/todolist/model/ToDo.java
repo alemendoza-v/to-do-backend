@@ -71,6 +71,18 @@ public class ToDo {
         return priority;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
     public void setDone(boolean isDone) {
         this.isDone = isDone;
     }

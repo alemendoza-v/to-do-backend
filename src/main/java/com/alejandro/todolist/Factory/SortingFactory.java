@@ -14,7 +14,7 @@ public class SortingFactory {
             return new SortByDueDate();
         } else if (sorted_by.size() == 1 && sorted_by.contains("priority")) {
             return new SortByPriority();
-        } else if (sorted_by.size() == 2 && sorted_by.get(0) == "dueDate") {
+        } else if (sorted_by.size() == 2 && sorted_by.get(0).equals("dueDate")) {
             return new SortByDueDatePriority();
         } else {
             return new SortByPriorityDueDate();
