@@ -8,6 +8,7 @@ import com.alejandro.todolist.model.ToDo;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @Service
 public class ToDoService {
@@ -19,7 +20,11 @@ public class ToDoService {
         return toDoDao.createToDo(toDo);
     }
 
-    public List<ToDo> getAllToDos(String text, List<String> sort_by, List<String> order_by, String filter_by, int priority, int page) {
+    public Map<String,Object> getAllToDos() {
+        return toDoDao.getAllToDos();
+    }
+
+    public Map<String,Object> getAllToDos(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page) {
         return toDoDao.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
     }
 

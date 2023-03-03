@@ -1,6 +1,8 @@
 package com.alejandro.todolist.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alejandro.todolist.model.ToDo;
+import com.alejandro.todolist.response.ResponseHandler;
 import com.alejandro.todolist.service.ToDoService;
 
 import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @RequestMapping(path="api/v1/todos")
 @RestController
@@ -32,13 +36,14 @@ public class ToDoController {
     }
 
     @GetMapping
-    public List<ToDo> getAllToDos(@RequestParam(defaultValue = "") String text,
+    public ResponseEntity<Object> getAllToDos(@RequestParam(defaultValue = "") String text,
                                   @RequestParam(required = false) List<String> sort_by,
                                   @RequestParam(required = false) List<String> order_by,
-                                  @RequestParam(required = false) String filter_by,
+                                  @RequestParam(required = false) List<String> filter_by,
                                   @RequestParam(defaultValue = "0") int priority,
                                   @RequestParam(defaultValue = "0") int page) {
-        return toDoService.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
+        Map<String,Object> result = toDoService.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
+        return ResponseHandler.generateResponse(result.get("prev"), result.get("next"), HttpStatus.OK, result.get("todos"));
     }
 
     @DeleteMapping(path = "{id}")

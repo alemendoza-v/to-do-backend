@@ -10,6 +10,7 @@ import com.alejandro.todolist.model.ToDo;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SuppressWarnings("unchecked")
 @SpringBootTest
 class TodolistApplicationTests {
 
@@ -75,7 +77,8 @@ class TodolistApplicationTests {
 		ToDo savedToDo = toDoService.createToDo(newToDo);
 
 		// WHEN 
-		List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+		Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertTrue(toDos.contains(savedToDo));
@@ -97,7 +100,8 @@ class TodolistApplicationTests {
 		sorting.add("priority");
         List<String> ordering = new ArrayList<>();
         ordering.add("desc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo3);
@@ -121,7 +125,8 @@ class TodolistApplicationTests {
 		sorting.add("priority");
         List<String> ordering = new ArrayList<>();
         ordering.add("asc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo2);
@@ -145,7 +150,8 @@ class TodolistApplicationTests {
 		sorting.add("dueDate");
         List<String> ordering = new ArrayList<>();
         ordering.add("asc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo2);
@@ -169,7 +175,8 @@ class TodolistApplicationTests {
 		sorting.add("dueDate");
         List<String> ordering = new ArrayList<>();
         ordering.add("desc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo3);
@@ -189,7 +196,10 @@ class TodolistApplicationTests {
 		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
 
 		// WHEN
-		List<ToDo> toDos = toDoService.getAllToDos("go", null, null, "name", 0, 0);
+        List<String> filtering = new ArrayList<>();
+		filtering.add("name");
+        Map<String, Object> response = toDoService.getAllToDos("go", null, null, filtering, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertTrue(toDos.contains(savedToDo1));
@@ -209,7 +219,10 @@ class TodolistApplicationTests {
 		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
 
 		// WHEN
-		List<ToDo> toDos = toDoService.getAllToDos(null, null, null, "priority", 3, 0);
+        List<String> filtering = new ArrayList<>();
+		filtering.add("priority");
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertTrue(toDos.contains(savedToDo1));
@@ -231,7 +244,10 @@ class TodolistApplicationTests {
 		toDoService.setToDoAsDone(savedToDo2.getId());
 
 		// WHEN
-		List<ToDo> toDos = toDoService.getAllToDos(null, null, null, "done", 0, 0);
+		List<String> filtering = new ArrayList<>();
+		filtering.add("done");
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertFalse(toDos.contains(savedToDo1));
@@ -253,7 +269,10 @@ class TodolistApplicationTests {
 		toDoService.setToDoAsDone(savedToDo2.getId());
 
 		// WHEN
-		List<ToDo> toDos = toDoService.getAllToDos(null, null, null, "undone", 0, 0);
+		List<String> filtering = new ArrayList<>();
+		filtering.add("undone");
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertTrue(toDos.contains(savedToDo1));
@@ -279,7 +298,10 @@ class TodolistApplicationTests {
 		sorting.add("priority");
         List<String> ordering = new ArrayList<>();
         ordering.add("asc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, "undone", 0, 0);
+        List<String> filtering = new ArrayList<>();
+		filtering.add("undone");
+        Map<String, Object> response = toDoService.getAllToDos(null, sorting, ordering, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo2);
@@ -303,7 +325,10 @@ class TodolistApplicationTests {
 		sorting.add("dueDate");
         List<String> ordering = new ArrayList<>();
         ordering.add("desc");
-		List<ToDo> toDos = toDoService.getAllToDos("go", sorting, ordering, "name", 0, 0);
+        List<String> filtering = new ArrayList<>();
+		filtering.add("name");
+        Map<String, Object> response = toDoService.getAllToDos("go", sorting, ordering, filtering, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo1);
@@ -333,7 +358,8 @@ class TodolistApplicationTests {
         List<String> ordering = new ArrayList<>();
         ordering.add("desc");
         ordering.add("desc");
-		List<ToDo> toDos = toDoService.getAllToDos(null, sorting, ordering, null, 0, 0);
+		Map<String, Object> response = toDoService.getAllToDos("go", sorting, ordering, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
 		// THEN
 		assertEquals(toDos.get(0), savedToDo3);
@@ -352,7 +378,8 @@ class TodolistApplicationTests {
 
         // WHEN 
         toDoService.deleteToDo(savedToDo.getId());
-        List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
         assertEquals(toDos.size(), 0);
@@ -367,7 +394,8 @@ class TodolistApplicationTests {
 
         // WHEN 
         toDoService.deleteToDo(newToDo.getId()); // Wrong ID
-        List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
         assertEquals(toDos.size(), 1);
@@ -383,7 +411,8 @@ class TodolistApplicationTests {
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
         ToDo updatedToDo = toDoService.updateToDo(savedToDo.getId(), newToDo);
-        List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
         assertEquals(toDos.size(), 1);
@@ -407,7 +436,8 @@ class TodolistApplicationTests {
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
         ToDo updatedToDo = toDoService.updateToDo(newToDo.getId(), newToDo); // Wrong ID
-        List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
         assertEquals(toDos.size(), 1);
@@ -480,7 +510,8 @@ class TodolistApplicationTests {
 		toDoService.createToDo(newToDo11);
 
         // WHEN
-        List<ToDo> toDos = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
         assertEquals(toDos.size(), 10);
