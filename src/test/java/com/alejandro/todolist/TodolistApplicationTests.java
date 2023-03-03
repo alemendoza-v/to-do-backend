@@ -280,6 +280,66 @@ class TodolistApplicationTests {
 		assertTrue(toDos.contains(savedToDo3));
 	}
 
+    @Test
+	void testGetAllToDosFilteredByUnDoneAndPriority() {
+		// GIVEN
+		toDoService.clearDB();
+		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
+		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
+		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
+		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+
+		toDoService.setToDoAsDone(savedToDo1.getId());
+
+		// WHEN
+		List<String> filtering = new ArrayList<>();
+		filtering.add("undone");
+        filtering.add("priority");
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
+
+		// THEN
+		assertFalse(toDos.contains(savedToDo1));
+		assertFalse(toDos.contains(savedToDo2));
+		assertTrue(toDos.contains(savedToDo3));
+	}
+
+    @Test
+	void testGetAllToDosFilteredByDoneAndPriorityAndName() {
+		// GIVEN
+		toDoService.clearDB();
+		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
+		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo newToDo2 = new ToDo("Go to the office", 3, LocalDate.of(2023, 3, 2));
+		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo newToDo3 = new ToDo("Write the weekly essay", 1, LocalDate.of(2023, 3, 3));
+		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+        ToDo newToDo4 = new ToDo("Write the technical log", 2, LocalDate.of(2023, 3, 4));
+		ToDo savedToDo4 = toDoService.createToDo(newToDo4);
+        ToDo newToDo5 = new ToDo("Read The Phoenix Project", 1, LocalDate.of(2023, 3, 8));
+		ToDo savedToDo5 = toDoService.createToDo(newToDo5);
+
+		toDoService.setToDoAsDone(savedToDo1.getId());
+		toDoService.setToDoAsDone(savedToDo2.getId());
+        
+		// WHEN
+		List<String> filtering = new ArrayList<>();
+		filtering.add("done");
+        filtering.add("priority");
+        filtering.add("name");
+        Map<String, Object> response = toDoService.getAllToDos("go", null, null, filtering, 3, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
+
+		// THEN
+		assertTrue(toDos.contains(savedToDo1));
+		assertTrue(toDos.contains(savedToDo2));
+        assertFalse(toDos.contains(savedToDo3));
+        assertFalse(toDos.contains(savedToDo4));
+        assertFalse(toDos.contains(savedToDo5));
+	}
+    
 	@Test
 	void testGetAllToDosSortedByPriorityAscFilteredByUnDone() {
 		// GIVEN
