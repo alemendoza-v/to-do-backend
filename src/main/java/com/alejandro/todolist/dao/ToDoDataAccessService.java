@@ -39,7 +39,7 @@ public class ToDoDataAccessService implements ToDoDao{
 
     private String buildNextOrPreviousUrl(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page, boolean isNext) {
         String url = "http://localhost:9090/ap1/v1/todos";
-        
+
         if(text != null && !text.equals("")) {
             url += "?text=";
             url += text;
@@ -115,14 +115,16 @@ public class ToDoDataAccessService implements ToDoDao{
                 returnList = filter(byUnDone, returnList);
 
             }
-            if (filter_by.contains("name")) {
+            if (filter_by.contains("text")) {
                 Predicate<ToDo> byName = toDo -> StringUtils.containsIgnoreCase(toDo.getText(), text);
                 returnList = filter(byName, returnList);
 
             } 
             if (filter_by.contains("priority")) {
-                Predicate<ToDo> byPriority = toDo -> toDo.getPriority() == priority;
-                returnList = filter(byPriority, returnList);
+                if (priority != 0) {
+                    Predicate<ToDo> byPriority = toDo -> toDo.getPriority() == priority;
+                    returnList = filter(byPriority, returnList);
+                }
             }
         }
        
