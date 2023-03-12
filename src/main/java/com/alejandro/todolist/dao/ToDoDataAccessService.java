@@ -38,7 +38,7 @@ public class ToDoDataAccessService implements ToDoDao{
     } 
 
     private String buildNextOrPreviousUrl(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page, boolean isNext) {
-        String url = "http://localhost:9090/ap1/v1/todos";
+        String url = "/todos";
 
         if(text != null && !text.equals("")) {
             url += "?text=";
@@ -87,16 +87,6 @@ public class ToDoDataAccessService implements ToDoDao{
         return url;
     }
 
-    @Override
-    public Map<String,Object> getAllToDos() {
-        List<ToDo> returnList = DB.subList(0, 9);
-        Map<String,Object> responseMap = new HashMap<String,Object>();
-        responseMap.put("prev", null);
-        responseMap.put("next","http://localhost:9090/api/v1/todos?page=1");
-        responseMap.put("todos", returnList);
-        return responseMap;
-    }
-
     @Override  
     public Map<String,Object> getAllToDos(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page) {
         List<ToDo> returnList = DB;
@@ -130,7 +120,7 @@ public class ToDoDataAccessService implements ToDoDao{
        
         int startIndex = page * 10;
         int endIndex = 0;
-        if ((page * 10) + 9 <= returnList.size()) {
+        if ((page * 10) + 9 < returnList.size()) {
             endIndex = (page * 10) + 10;
         } else {
             endIndex = returnList.size();

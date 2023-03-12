@@ -197,7 +197,7 @@ class TodolistApplicationTests {
 
 		// WHEN
         List<String> filtering = new ArrayList<>();
-		filtering.add("name");
+		filtering.add("text");
         Map<String, Object> response = toDoService.getAllToDos("go", null, null, filtering, 0, 0);
         List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
@@ -386,7 +386,7 @@ class TodolistApplicationTests {
         List<String> ordering = new ArrayList<>();
         ordering.add("desc");
         List<String> filtering = new ArrayList<>();
-		filtering.add("name");
+		filtering.add("text");
         Map<String, Object> response = toDoService.getAllToDos("go", sorting, ordering, filtering, 0, 0);
         List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
@@ -543,7 +543,7 @@ class TodolistApplicationTests {
 	}
 
     @Test
-    void testToDoPagination() {
+    void testToDoPagination_01() {
         // GIVEN
         toDoService.clearDB();
         ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.now());
@@ -575,5 +575,36 @@ class TodolistApplicationTests {
 
         // THEN
         assertEquals(toDos.size(), 10);
+    }
+
+    @Test
+    void testToDoPagination_02() {
+        // GIVEN
+        toDoService.clearDB();
+        ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo1);
+        ToDo newToDo2 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo2);
+        ToDo newToDo3 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo3);
+        ToDo newToDo4 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo4);
+        ToDo newToDo5 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo5);
+        ToDo newToDo6 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo6);
+        ToDo newToDo7 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo7);
+        ToDo newToDo8 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo8);
+        ToDo newToDo9 = new ToDo("Go to the doctor", 3, LocalDate.now());
+		toDoService.createToDo(newToDo9);
+
+        // WHEN
+        Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
+        List<ToDo> toDos = (List<ToDo>) response.get("todos");
+
+        // THEN
+        assertEquals(9, toDos.size());
     }
 }

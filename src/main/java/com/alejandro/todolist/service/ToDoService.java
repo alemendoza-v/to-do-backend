@@ -20,10 +20,6 @@ public class ToDoService {
         return toDoDao.createToDo(toDo);
     }
 
-    public Map<String,Object> getAllToDos() {
-        return toDoDao.getAllToDos();
-    }
-
     public Map<String,Object> getAllToDos(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page) {
         return toDoDao.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
     }
