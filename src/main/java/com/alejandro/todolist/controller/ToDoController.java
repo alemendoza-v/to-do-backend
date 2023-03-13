@@ -61,7 +61,7 @@ public class ToDoController {
         return toDoService.setToDoAsDone(id);
     }
 
-    @PutMapping(path = "{id}/undone") 
+    @PostMapping(path = "{id}/undone") 
     public ToDo setToDoAsUndone(@PathVariable("id") UUID id) {
         return toDoService.setToDoAsUndone(id);
     }

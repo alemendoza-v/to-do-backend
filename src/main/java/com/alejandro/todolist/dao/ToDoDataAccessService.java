@@ -41,11 +41,19 @@ public class ToDoDataAccessService implements ToDoDao{
         String url = "/todos";
 
         if(text != null && !text.equals("")) {
-            url += "?text=";
+            if(url.contains("?")) {
+                url += "&text=";
+            } else {
+                url += "?text=";
+            }
             url += text;
         }
         if (sort_by != null) {
-            url += "?sort_by=";
+            if(url.contains("?")) {
+                url += "&sort_by=";
+            } else {
+                url += "?sort_by=";
+            }
             url += sort_by.get(0);
             if (sort_by.size() == 2) {
                 url += ",";
@@ -53,7 +61,11 @@ public class ToDoDataAccessService implements ToDoDao{
             }
         }
         if (order_by != null) {
-            url += "?order_by=";
+            if(url.contains("?")) {
+                url += "&order_by=";
+            } else {
+                url += "?order_by=";
+            }
             url += order_by.get(0);
             if (order_by.size() == 2) {
                 url += ",";
@@ -61,7 +73,11 @@ public class ToDoDataAccessService implements ToDoDao{
             }
         }
         if (filter_by != null) {
-            url += "?filter_by=";
+            if(url.contains("?")) {
+                url += "&filter_by=";
+            } else {
+                url += "?filter_by=";
+            }
             url += filter_by.get(0);
             if (filter_by.size() >= 2) {
                 url += ",";
@@ -72,16 +88,24 @@ public class ToDoDataAccessService implements ToDoDao{
                 url += filter_by.get(2);
             }
             if(filter_by.contains("priority")) {
-                url += "?priority=";
+                url += "&priority=";
                 url += Integer.toString(priority);
             }
         }
 
         if (isNext) {
-            url += "?page=";
+            if(url.contains("?")) {
+                url += "&page=";
+            } else {
+                url += "?page=";
+            }
             url += Integer.toString(page + 1);
         } else {
-            url += "?page=";
+            if(url.contains("?")) {
+                url += "&page=";
+            } else {
+                url += "?page=";
+            }
             url += Integer.toString(page - 1);
         }
         return url;
