@@ -23,4 +23,6 @@ public interface ToDoDao {
     ToDo setToDoAsUndone(UUID id);
 
     void clearDB();
+
+    Map<String,Object> calculateDurations();
 }

@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alejandro.todolist.model.ToDo;
+
+import java.time.temporal.ChronoUnit;
+
 import com.alejandro.todolist.Factory.SortingFactory;
 
 @Repository("dao")
@@ -227,5 +230,61 @@ public class ToDoDataAccessService implements ToDoDao{
     @Override
     public void clearDB() {
         DB.clear();
+    }
+
+    private String calculateDuration(List<ToDo> toDos) {
+        long secondsAll = 0;
+        for(ToDo toDo : toDos) {
+            secondsAll += ChronoUnit.SECONDS.between(toDo.getCreatedAt(), toDo.getDoneDate());
+        }
+        secondsAll /= toDos.size();
+        long minutesAll = secondsAll / 60;
+        secondsAll %= 60;
+        
+        return String.format("%02d:%02d minutes", minutesAll, secondsAll);
+    }
+    
+    @Override
+    public Map<String,Object> calculateDurations() {
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+
+        Predicate<ToDo> byDone = toDo -> toDo.getIsDone() == true;
+        List<ToDo> filteredToDos = filter(byDone, DB);
+        if (filteredToDos.isEmpty()) {
+            responseMap.put("averageAll", null);
+            responseMap.put("averageHigh", null);
+            responseMap.put("averageMedium", null);
+            responseMap.put("averageLow", null);
+            return responseMap;
+        }
+        
+        String resultAll = calculateDuration(filteredToDos);
+        String resultHigh = null;
+        String resultMedium = null;
+        String resultLow = null;
+        
+        Predicate<ToDo> byPriorityHigh = toDo -> toDo.getPriority() == 3;
+        List<ToDo> filteredByHighToDos = filter(byPriorityHigh, filteredToDos);
+        if(!filteredByHighToDos.isEmpty()) {
+            resultHigh = calculateDuration(filteredByHighToDos);
+        } 
+
+        Predicate<ToDo> byPriorityMedium = toDo -> toDo.getPriority() == 2;
+        List<ToDo> filteredByMediumToDos = filter(byPriorityMedium, filteredToDos);
+        if(!filteredByMediumToDos.isEmpty()) {
+            resultMedium = calculateDuration(filteredByMediumToDos);
+        } 
+
+        Predicate<ToDo> byPriorityLow = toDo -> toDo.getPriority() == 1;
+        List<ToDo> filteredByLowToDos = filter(byPriorityLow, filteredToDos);
+        if(!filteredByLowToDos.isEmpty()) {
+            resultLow = calculateDuration(filteredByLowToDos);
+        } 
+        
+        responseMap.put("averageAll", resultAll);
+        responseMap.put("averageHigh", resultHigh);
+        responseMap.put("averageMedium", resultMedium);
+        responseMap.put("averageLow", resultLow);
+        return responseMap;
     }
 }

@@ -43,4 +43,8 @@ public class ToDoService {
     public void clearDB() {
         toDoDao.clearDB();
     }
+
+    public Map<String,Object> calculateDurations() {
+        return toDoDao.calculateDurations();
+    }
 }

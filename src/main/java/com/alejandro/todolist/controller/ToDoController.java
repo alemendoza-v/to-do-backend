@@ -65,4 +65,10 @@ public class ToDoController {
     public ToDo setToDoAsUndone(@PathVariable("id") UUID id) {
         return toDoService.setToDoAsUndone(id);
     }
+
+    @GetMapping(path = "metrics")
+    public ResponseEntity<Object> calculateDurations() {
+        Map<String,Object> result = toDoService.calculateDurations();
+        return ResponseHandler.generateResponse(result, HttpStatus.OK);
+    }
 }
