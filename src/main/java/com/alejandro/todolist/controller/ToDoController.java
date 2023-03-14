@@ -52,7 +52,7 @@ public class ToDoController {
     }
 
     @PutMapping(path = "{id}")
-    public ToDo updateToDoById(@PathVariable("id") UUID id, @RequestBody ToDo toDo) {
+    public ToDo updateToDoById(@PathVariable("id") UUID id, @RequestBody @Valid ToDo toDo) {
         return toDoService.updateToDo(id, toDo);
     }
 
