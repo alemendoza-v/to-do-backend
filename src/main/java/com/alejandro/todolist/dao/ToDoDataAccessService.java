@@ -28,10 +28,32 @@ public class ToDoDataAccessService implements ToDoDao{
     private SortingFactory sortingFactory;
 
     @Override
-    public ToDo createToDo(ToDo toDo) {
+    public Map<String,Object> createToDo(ToDo toDo) {
         ToDo newToDo = new ToDo(toDo.getText(), toDo.getPriority(), toDo.getDueDate());
+        if (newToDo.getText().equals("")) {
+            String error = "No duplicate to dos are allowed";
+                Map<String,Object> responseMap = new HashMap<String, Object>();
+                responseMap.put("error", error);
+                responseMap.put("todo", null);
+                return responseMap;
+        }
+
+        Predicate<ToDo> byName = t -> StringUtils.containsIgnoreCase(t.getText(), newToDo.getText());
+        List<ToDo> filteredList = filter(byName, DB);
+        for(ToDo t : filteredList ) {
+            if(t.getText().equals(newToDo.getText())) {
+                // Duplicate found
+                String error = "No duplicate to dos are allowed";
+                Map<String,Object> responseMap = new HashMap<String, Object>();
+                responseMap.put("error", error);
+                responseMap.put("todo", null);
+                return responseMap;
+            }
+        }
         DB.add(newToDo);
-        return newToDo;
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        responseMap.put("todo", newToDo);
+        return responseMap;
     }
 
     private List<ToDo> filter(Predicate<ToDo> predicate, List<ToDo> list) {

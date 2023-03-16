@@ -31,8 +31,12 @@ public class ToDoController {
     private ToDoService toDoService;
 
     @PostMapping
-    public ToDo addToDo(@Valid @RequestBody ToDo toDo) {
-        return toDoService.createToDo(toDo);
+    public ResponseEntity<Object> addToDo(@Valid @RequestBody ToDo toDo) {
+        Map<String,Object> result = toDoService.createToDo(toDo);
+        if(result.get("todo") == null) {
+            return ResponseHandler.generateResponse(result.get("error"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.OK);
     }
 
     @GetMapping

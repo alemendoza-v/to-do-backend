@@ -16,7 +16,7 @@ public class ToDoService {
     @Autowired
     private ToDoDao toDoDao;
 
-    public ToDo createToDo(ToDo toDo) {
+    public Map<String,Object> createToDo(ToDo toDo) {
         return toDoDao.createToDo(toDo);
     }
 

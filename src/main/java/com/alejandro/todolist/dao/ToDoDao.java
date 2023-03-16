@@ -8,7 +8,7 @@ import java.util.Map;
 import com.alejandro.todolist.model.ToDo;
 
 public interface ToDoDao {
-    ToDo createToDo(ToDo todo);
+    Map<String,Object> createToDo(ToDo todo);
 
     Map<String,Object> getAllToDos(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page);
 

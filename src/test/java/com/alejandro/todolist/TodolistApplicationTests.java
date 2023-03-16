@@ -28,10 +28,11 @@ class TodolistApplicationTests {
 	@Test
 	void testCreateToDo_1() {
 		// GIVEN
+		toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, LocalDate.now());
 
 		// WHEN 
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
 		// THEN
 		assertEquals(newToDo.getText(), savedToDo.getText());
@@ -44,10 +45,11 @@ class TodolistApplicationTests {
 	@Test
 	void testCreateToDo_2() {
 		// GIVEN
+		toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, null);
 
 		// WHEN 
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
 		// THEN
 		assertEquals(newToDo.getText(), savedToDo.getText());
@@ -57,24 +59,24 @@ class TodolistApplicationTests {
 		assertEquals(newToDo.getPriority(), savedToDo.getPriority());
 	}
 
-    // @Test
-	// void testCreateToDo_3() {
-	// 	// GIVEN
-	// 	ToDo newToDo = new ToDo("", 3, null);
+    @Test
+	void testCreateToDo_3() {
+		// GIVEN
+		ToDo newToDo = new ToDo("", 3, null);
 
-	// 	// WHEN 
-	// 	ToDo savedToDo = toDoService.createToDo(newToDo);
+		// WHEN 
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
-	// 	// THEN
-    //     assertNull(savedToDo);
-	// }
+		// THEN
+        assertNull(savedToDo);
+	}
 
 	@Test
 	void testGetAllToDos() {
 		// GIVEN 
 		toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, null);
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
 		// WHEN 
 		Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
@@ -89,11 +91,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, null);
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, null);
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, null);
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -114,11 +116,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, null);
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, null);
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, null);
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -139,11 +141,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -164,11 +166,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -189,11 +191,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
         List<String> filtering = new ArrayList<>();
@@ -212,11 +214,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
         List<String> filtering = new ArrayList<>();
@@ -235,11 +237,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		toDoService.setToDoAsDone(savedToDo2.getId());
 
@@ -260,11 +262,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		toDoService.setToDoAsDone(savedToDo2.getId());
 
@@ -285,11 +287,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		toDoService.setToDoAsDone(savedToDo1.getId());
 
@@ -311,15 +313,15 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 3, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 1, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
         ToDo newToDo4 = new ToDo("Write the technical log", 2, LocalDate.of(2023, 3, 4));
-		ToDo savedToDo4 = toDoService.createToDo(newToDo4);
+		ToDo savedToDo4 = (ToDo) toDoService.createToDo(newToDo4).get("todo");
         ToDo newToDo5 = new ToDo("Read The Phoenix Project", 1, LocalDate.of(2023, 3, 8));
-		ToDo savedToDo5 = toDoService.createToDo(newToDo5);
+		ToDo savedToDo5 = (ToDo) toDoService.createToDo(newToDo5).get("todo");
 
 		toDoService.setToDoAsDone(savedToDo1.getId());
 		toDoService.setToDoAsDone(savedToDo2.getId());
@@ -345,11 +347,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		toDoService.setToDoAsDone(savedToDo3.getId());
 
@@ -374,11 +376,11 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -401,15 +403,15 @@ class TodolistApplicationTests {
 		// GIVEN
 		toDoService.clearDB();
 		ToDo newToDo1 = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo1 = toDoService.createToDo(newToDo1);
+		ToDo savedToDo1 = (ToDo) toDoService.createToDo(newToDo1).get("todo");
 		ToDo newToDo2 = new ToDo("Go to the office", 1, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo2 = toDoService.createToDo(newToDo2);
+		ToDo savedToDo2 = (ToDo) toDoService.createToDo(newToDo2).get("todo");
 		ToDo newToDo3 = new ToDo("Write the weekly essay", 3, LocalDate.of(2023, 3, 6));
-		ToDo savedToDo3 = toDoService.createToDo(newToDo3);
+		ToDo savedToDo3 = (ToDo) toDoService.createToDo(newToDo3).get("todo");
         ToDo newToDo4 = new ToDo("Walk my dog", 2, LocalDate.of(2023, 3, 2));
-		ToDo savedToDo4 = toDoService.createToDo(newToDo4);
+		ToDo savedToDo4 = (ToDo) toDoService.createToDo(newToDo4).get("todo");
         ToDo newToDo5 = new ToDo("Buy groceries", 3, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo5 = toDoService.createToDo(newToDo5);
+		ToDo savedToDo5 = (ToDo) toDoService.createToDo(newToDo5).get("todo");
 
 		// WHEN
 		List<String> sorting = new ArrayList<>();
@@ -434,7 +436,7 @@ class TodolistApplicationTests {
         // GIVEN 
         toDoService.clearDB();
         ToDo newToDo = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
         // WHEN 
         toDoService.deleteToDo(savedToDo.getId());
@@ -466,7 +468,7 @@ class TodolistApplicationTests {
         // GIVEN 
         toDoService.clearDB();
         ToDo newToDo = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
@@ -491,7 +493,7 @@ class TodolistApplicationTests {
         // GIVEN 
         toDoService.clearDB();
         ToDo newToDo = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
@@ -516,7 +518,7 @@ class TodolistApplicationTests {
 		// GIVEN
         toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, LocalDate.now());
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
 		// WHEN 
         savedToDo = toDoService.setToDoAsDone(savedToDo.getId());
@@ -531,7 +533,7 @@ class TodolistApplicationTests {
 		// GIVEN
         toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, LocalDate.now());
-		ToDo savedToDo = toDoService.createToDo(newToDo);
+		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
         savedToDo = toDoService.setToDoAsDone(savedToDo.getId());
 
 		// WHEN 
@@ -546,27 +548,27 @@ class TodolistApplicationTests {
     void testToDoPagination_01() {
         // GIVEN
         toDoService.clearDB();
-        ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo1 = new ToDo("Go to the doctor1", 3, LocalDate.now());
 		toDoService.createToDo(newToDo1);
-        ToDo newToDo2 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo2 = new ToDo("Go to the doctor2", 3, LocalDate.now());
 		toDoService.createToDo(newToDo2);
-        ToDo newToDo3 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo3 = new ToDo("Go to the doctor3", 3, LocalDate.now());
 		toDoService.createToDo(newToDo3);
-        ToDo newToDo4 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo4 = new ToDo("Go to the doctor4", 3, LocalDate.now());
 		toDoService.createToDo(newToDo4);
-        ToDo newToDo5 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo5 = new ToDo("Go to the doctor5", 3, LocalDate.now());
 		toDoService.createToDo(newToDo5);
-        ToDo newToDo6 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo6 = new ToDo("Go to the doctor6", 3, LocalDate.now());
 		toDoService.createToDo(newToDo6);
-        ToDo newToDo7 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo7 = new ToDo("Go to the doctor7", 3, LocalDate.now());
 		toDoService.createToDo(newToDo7);
-        ToDo newToDo8 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo8 = new ToDo("Go to the doctor8", 3, LocalDate.now());
 		toDoService.createToDo(newToDo8);
-        ToDo newToDo9 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo9 = new ToDo("Go to the doctor9", 3, LocalDate.now());
 		toDoService.createToDo(newToDo9);
-        ToDo newToDo10 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo10 = new ToDo("Go to the doctor10", 3, LocalDate.now());
 		toDoService.createToDo(newToDo10);
-        ToDo newToDo11 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo11 = new ToDo("Go to the doctor11", 3, LocalDate.now());
 		toDoService.createToDo(newToDo11);
 
         // WHEN
@@ -581,23 +583,23 @@ class TodolistApplicationTests {
     void testToDoPagination_02() {
         // GIVEN
         toDoService.clearDB();
-        ToDo newToDo1 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo1 = new ToDo("Go to the doctor1", 3, LocalDate.now());
 		toDoService.createToDo(newToDo1);
-        ToDo newToDo2 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo2 = new ToDo("Go to the doctor2", 3, LocalDate.now());
 		toDoService.createToDo(newToDo2);
-        ToDo newToDo3 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo3 = new ToDo("Go to the doctor3", 3, LocalDate.now());
 		toDoService.createToDo(newToDo3);
-        ToDo newToDo4 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo4 = new ToDo("Go to the doctor4", 3, LocalDate.now());
 		toDoService.createToDo(newToDo4);
-        ToDo newToDo5 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo5 = new ToDo("Go to the doctor5", 3, LocalDate.now());
 		toDoService.createToDo(newToDo5);
-        ToDo newToDo6 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo6 = new ToDo("Go to the doctor6", 3, LocalDate.now());
 		toDoService.createToDo(newToDo6);
-        ToDo newToDo7 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo7 = new ToDo("Go to the doctor7", 3, LocalDate.now());
 		toDoService.createToDo(newToDo7);
-        ToDo newToDo8 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo8 = new ToDo("Go to the doctor8", 3, LocalDate.now());
 		toDoService.createToDo(newToDo8);
-        ToDo newToDo9 = new ToDo("Go to the doctor", 3, LocalDate.now());
+        ToDo newToDo9 = new ToDo("Go to the doctor9", 3, LocalDate.now());
 		toDoService.createToDo(newToDo9);
 
         // WHEN
