@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 import com.alejandro.todolist.model.ToDo;
 
+/**
+ * The SortByDueDatePriority class implements the SortingInterface interface and provides a method
+ * to sort a list of ToDo objects by priority and then by due date
+ */
 public class SortByPriorityDueDate implements SortingInterface {
     private Comparator<ToDo> priorityComparator = Comparator.comparing(ToDo::getPriority);
 

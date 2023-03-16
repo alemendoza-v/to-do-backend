@@ -27,6 +27,13 @@ public class ToDoDataAccessService implements ToDoDao{
     @Autowired
     private SortingFactory sortingFactory;
 
+    /**
+     * If the text of the todo is empty, return an error. Otherwise, if the todo already exists, return
+     * an error. Otherwise, add the todo to the database and return the todo
+     * 
+     * @param toDo The todo object that is passed in from the client.
+     * @return A map with a key of "todo" and a value of the new todo object.
+     */
     @Override
     public Map<String,Object> createToDo(ToDo toDo) {
         ToDo newToDo = new ToDo(toDo.getText(), toDo.getPriority(), toDo.getDueDate());
@@ -56,12 +63,33 @@ public class ToDoDataAccessService implements ToDoDao{
         return responseMap;
     }
 
+    /**
+     * Filter the list of ToDos by the given predicate and return the result.
+     * 
+     * @param predicate A function that takes a ToDo object and returns a boolean.
+     * @param list The list of ToDo objects to filter.
+     * @return A list of ToDo objects that match the predicate.
+     */
     private List<ToDo> filter(Predicate<ToDo> predicate, List<ToDo> list) {
         return list.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
     } 
 
+    /**
+     * It takes in sorting, ordering, filtering and pagination parameters 
+     * and returns a url that can be used to navigate to the next or
+     * previous page
+     * 
+     * @param text the text to search for
+     * @param sort_by a list of strings that can be "priority" and/or "dueDate"
+     * @param order_by a list of strings that can be "asc" and/or "desc"
+     * @param filter_by a list of strings that can be "text", "priority", "done", "unDone"
+     * @param priority the priority of the todo as an int
+     * @param page the current page number
+     * @param isNext boolean value that determines whether the next or previous page is being built
+     * @return A string that is the url for the next or previous page.
+     */
     private String buildNextOrPreviousUrl(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page, boolean isNext) {
         String url = "/todos";
 
@@ -136,6 +164,21 @@ public class ToDoDataAccessService implements ToDoDao{
         return url;
     }
 
+    /**
+     * It takes in parameters, filters the DB based on those parameters, and returns a map with
+     * the filtered list, and the next and previous urls
+     * 
+     * * @param text the text to search for
+     * @param sort_by a list of strings that can be "priority" and/or "dueDate"
+     * @param order_by a list of strings that can be "asc" and/or "desc"
+     * @param filter_by a list of strings that can be "text", "priority", "done", "unDone"
+     * @param priority the priority of the todo as an int
+     * @param page The page number to return.
+     * @return A map with the following keys:
+     * - prev: the url for the previous page
+     * - next: the url for the next page
+     * - todos: a list of todos
+     */
     @Override  
     public Map<String,Object> getAllToDos(String text, List<String> sort_by, List<String> order_by, List<String> filter_by, int priority, int page) {
         List<ToDo> returnList = DB;
@@ -193,6 +236,12 @@ public class ToDoDataAccessService implements ToDoDao{
         return responseMap;
     }
 
+    /**
+     * Return the first ToDo in the DB that has the same ID as the ID passed in.
+     * 
+     * @param id The id of the ToDo to retrieve.
+     * @return Optional<ToDo>
+     */
     @Override
     public Optional<ToDo> getToDoById(UUID id) {
         return DB.stream()
@@ -200,6 +249,11 @@ public class ToDoDataAccessService implements ToDoDao{
                 .findFirst();
     }
 
+    /**
+     * If the ToDo exists, remove it from the database
+     * 
+     * @param id The id of the todo to delete
+     */
     @Override
     public void deleteToDoById(UUID id) {
         Optional<ToDo> toDo = getToDoById(id);
@@ -211,6 +265,14 @@ public class ToDoDataAccessService implements ToDoDao{
         return;
     }
 
+    /**
+     * If the ToDo with the given id exists, then update the ToDo with the given id with the new ToDo's
+     * text, priority, and due date
+     * 
+     * @param id The id of the ToDo to update
+     * @param newToDo The new ToDo object that will replace the old one.
+     * @return The ToDo object that was updated.
+     */
     @Override
     public ToDo updateToDoById(UUID id, ToDo newToDo) {
         return getToDoById(id)
@@ -227,6 +289,12 @@ public class ToDoDataAccessService implements ToDoDao{
                 .orElse(null);
     }
 
+    /**
+     * > If the ToDo with the given id exists, set it as done and return it. Otherwise, return null
+     * 
+     * @param id The id of the ToDo to be set as done.
+     * @return A ToDo object
+     */
     @Override 
     public ToDo setToDoAsDone(UUID id) {
         return getToDoById(id)
@@ -238,6 +306,12 @@ public class ToDoDataAccessService implements ToDoDao{
             .orElse(null);
     }
 
+    /**
+     * If the to-do exists, set it as undone and return it, otherwise return null.
+     * 
+     * @param id The id of the ToDo to be updated.
+     * @return A ToDo object
+     */
     @Override
     public ToDo setToDoAsUndone(UUID id) {
         return getToDoById(id)
@@ -249,11 +323,22 @@ public class ToDoDataAccessService implements ToDoDao{
             .orElse(null);
     }
 
+    /**
+     * Clear the database.
+     * Testing purposes
+     */
     @Override
     public void clearDB() {
         DB.clear();
     }
 
+    /**
+     * > It takes a list of ToDo objects, calculates the average time it took to complete them, and returns
+     * a string representation of that time
+     * 
+     * @param toDos a list of ToDo objects
+     * @return The average duration of the todos in the list.
+     */
     private String calculateDuration(List<ToDo> toDos) {
         long secondsAll = 0;
         for(ToDo toDo : toDos) {
@@ -266,6 +351,14 @@ public class ToDoDataAccessService implements ToDoDao{
         return String.format("%02d:%02d minutes", minutesAll, secondsAll);
     }
     
+    /**
+     * > It filters the DB for all done ToDos, then filters the result for each priority, and then
+     * calculates the average duration for each priority
+     * 
+     * @return A map with the average duration of all todos, the average duration of all todos with high
+     * priority, the average duration of all todos with medium priority and the average duration of all
+     * todos with low priority.
+     */
     @Override
     public Map<String,Object> calculateDurations() {
         Map<String,Object> responseMap = new HashMap<String, Object>();

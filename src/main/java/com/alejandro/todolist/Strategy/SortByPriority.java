@@ -5,6 +5,9 @@ import java.util.Comparator;
 
 import com.alejandro.todolist.model.ToDo;
 
+/**
+ * SortByPriority implements the SortingInterface and sorts the list of ToDos by priority.
+ */
 public class SortByPriority implements SortingInterface {
     @Override
     public List<ToDo> getSortedList(List<ToDo> toDos, List<String> order_by) {

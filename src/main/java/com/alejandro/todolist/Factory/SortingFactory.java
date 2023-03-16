@@ -6,6 +6,10 @@ import com.alejandro.todolist.Strategy.*;
 
 import java.util.List;
 
+/**
+ * The SortingFactory class is a factory class that returns a SortingInterface object based on the
+ * sorting criteria
+ */
 @Component
 public class SortingFactory {
 
