@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SuppressWarnings("unchecked")
 @SpringBootTest
-class TodolistApplicationTests {
+class ToDoServiceTests {
 
 	@Autowired
 	private ToDoService toDoService;

@@ -38,7 +38,7 @@ public class ToDoDataAccessService implements ToDoDao{
     public Map<String,Object> createToDo(ToDo toDo) {
         ToDo newToDo = new ToDo(toDo.getText(), toDo.getPriority(), toDo.getDueDate());
         if (newToDo.getText().equals("")) {
-            String error = "No duplicate to dos are allowed";
+            String error = "To do text must not be empty";
                 Map<String,Object> responseMap = new HashMap<String, Object>();
                 responseMap.put("error", error);
                 responseMap.put("todo", null);

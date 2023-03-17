@@ -43,7 +43,7 @@ public class ToDoController {
         if(result.get("todo") == null) {
             return ResponseHandler.generateResponse(result.get("error"), HttpStatus.BAD_REQUEST);
         }
-        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.OK);
+        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.CREATED);
     }
 
     /**
