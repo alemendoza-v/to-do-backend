@@ -14,7 +14,7 @@ public interface ToDoDao {
 
     Optional<ToDo> getToDoById(UUID id); 
 
-    void deleteToDoById(UUID id);
+    void deleteToDo(ToDo toDo);
 
     ToDo updateToDoById(UUID id, ToDo newToDo);
 

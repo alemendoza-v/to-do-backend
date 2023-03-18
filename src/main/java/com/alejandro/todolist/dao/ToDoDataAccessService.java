@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,19 +37,10 @@ public class ToDoDataAccessService implements ToDoDao{
      */
     @Override
     public Map<String,Object> createToDo(ToDo toDo) {
-        ToDo newToDo = new ToDo(toDo.getText(), toDo.getPriority(), toDo.getDueDate());
-        if (newToDo.getText().equals("")) {
-            String error = "To do text must not be empty";
-                Map<String,Object> responseMap = new HashMap<String, Object>();
-                responseMap.put("error", error);
-                responseMap.put("todo", null);
-                return responseMap;
-        }
-
-        Predicate<ToDo> byName = t -> StringUtils.containsIgnoreCase(t.getText(), newToDo.getText());
+        Predicate<ToDo> byName = t -> StringUtils.containsIgnoreCase(t.getText(), toDo.getText());
         List<ToDo> filteredList = filter(byName, DB);
         for(ToDo t : filteredList ) {
-            if(t.getText().equals(newToDo.getText())) {
+            if(t.getText().equals(toDo.getText())) {
                 // Duplicate found
                 String error = "No duplicate to dos are allowed";
                 Map<String,Object> responseMap = new HashMap<String, Object>();
@@ -57,9 +49,9 @@ public class ToDoDataAccessService implements ToDoDao{
                 return responseMap;
             }
         }
-        DB.add(newToDo);
+        DB.add(toDo);
         Map<String,Object> responseMap = new HashMap<String, Object>();
-        responseMap.put("todo", newToDo);
+        responseMap.put("todo", toDo);
         return responseMap;
     }
 
@@ -230,6 +222,7 @@ public class ToDoDataAccessService implements ToDoDao{
         }
 
         Map<String,Object> responseMap = new HashMap<String, Object>();
+        responseMap.put("pages", (int) Math.ceil( returnList.size() / 10.0 ));
         responseMap.put("prev", prev);
         responseMap.put("next", next);
         responseMap.put("todos", returnList.subList(startIndex, endIndex));
@@ -255,14 +248,8 @@ public class ToDoDataAccessService implements ToDoDao{
      * @param id The id of the todo to delete
      */
     @Override
-    public void deleteToDoById(UUID id) {
-        Optional<ToDo> toDo = getToDoById(id);
-
-        if (toDo.isEmpty()) {
-            return;
-        } 
-        DB.remove(toDo.get());
-        return;
+    public void deleteToDo(ToDo toDo) {
+        DB.remove(toDo);
     }
 
     /**

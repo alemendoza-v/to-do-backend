@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -452,15 +453,15 @@ class ToDoServiceTests {
         // GIVEN 
         toDoService.clearDB();
         ToDo newToDo = new ToDo("Go to the doctor", 2, LocalDate.of(2023, 3, 3));
-		toDoService.createToDo(newToDo);
+		toDoService.createToDo(newToDo).get("data");
 
         // WHEN 
-        toDoService.deleteToDo(newToDo.getId()); // Wrong ID
+        toDoService.deleteToDo(new UUID(0, 0)); // Wrong ID
         Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
         List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
         // THEN
-        assertEquals(toDos.size(), 1);
+        assertEquals(1, toDos.size());
     }
 
     @Test   
@@ -472,7 +473,7 @@ class ToDoServiceTests {
 
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
-        ToDo updatedToDo = toDoService.updateToDo(savedToDo.getId(), newToDo);
+        ToDo updatedToDo = (ToDo) toDoService.updateToDo(savedToDo.getId(), newToDo).get("todo");
         Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
         List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
@@ -497,7 +498,7 @@ class ToDoServiceTests {
 
         // WHEN 
         newToDo = new ToDo("Play valorant", 3, LocalDate.of(2023, 3, 3));
-        ToDo updatedToDo = toDoService.updateToDo(newToDo.getId(), newToDo); // Wrong ID
+        ToDo updatedToDo = (ToDo) toDoService.updateToDo(newToDo.getId(), newToDo).get("todo"); // Wrong ID
         Map<String, Object> response = toDoService.getAllToDos(null, null, null, null, 0, 0);
         List<ToDo> toDos = (List<ToDo>) response.get("todos");
 
@@ -521,7 +522,7 @@ class ToDoServiceTests {
 		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
 
 		// WHEN 
-        savedToDo = toDoService.setToDoAsDone(savedToDo.getId());
+        savedToDo = (ToDo) toDoService.setToDoAsDone(savedToDo.getId()).get("todo");
 
 		// THEN
 		assertTrue(savedToDo.getIsDone());
@@ -534,10 +535,10 @@ class ToDoServiceTests {
         toDoService.clearDB();
 		ToDo newToDo = new ToDo("Go to the doctor", 3, LocalDate.now());
 		ToDo savedToDo = (ToDo) toDoService.createToDo(newToDo).get("todo");
-        savedToDo = toDoService.setToDoAsDone(savedToDo.getId());
+        savedToDo = (ToDo) toDoService.setToDoAsDone(savedToDo.getId()).get("todo");
 
 		// WHEN 
-        savedToDo = toDoService.setToDoAsUndone(savedToDo.getId());
+        savedToDo = (ToDo) toDoService.setToDoAsUndone(savedToDo.getId()).get("todo");
 
 		// THEN
 		assertFalse(savedToDo.getIsDone());

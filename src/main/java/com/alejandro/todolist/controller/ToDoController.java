@@ -59,14 +59,14 @@ public class ToDoController {
      * @return ResponseEntity<Object>
      */
     @GetMapping
-    public ResponseEntity<Object> getAllToDos(@RequestParam(defaultValue = "") String text,
+    public ResponseEntity<Object> getAllToDos(@RequestParam(required = false, defaultValue = "") String text,
                                   @RequestParam(required = false) List<String> sort_by,
                                   @RequestParam(required = false) List<String> order_by,
                                   @RequestParam(required = false) List<String> filter_by,
-                                  @RequestParam(defaultValue = "0") int priority,
-                                  @RequestParam(defaultValue = "0") int page) {
+                                  @RequestParam(required = false, defaultValue = "0") int priority,
+                                  @RequestParam(required = false, defaultValue = "0") int page) {
         Map<String,Object> result = toDoService.getAllToDos(text, sort_by, order_by, filter_by, priority, page);
-        return ResponseHandler.generateResponse(result.get("prev"), result.get("next"), HttpStatus.OK, result.get("todos"));
+        return ResponseHandler.generateResponse(result.get("pages"), result.get("prev"), result.get("next"), HttpStatus.OK, result.get("todos"));
     }
 
     /**
@@ -75,8 +75,12 @@ public class ToDoController {
      * @param id The id of the todo item to delete
      */
     @DeleteMapping(path = "{id}")
-    public void deleteToDoById(@PathVariable("id") UUID id) {
-        toDoService.deleteToDo(id);
+    public ResponseEntity<Object> deleteToDoById(@PathVariable("id") UUID id) {
+        Map<String,Object> result = toDoService.deleteToDo(id);
+        if (result.get("todo") == null) {
+            return ResponseHandler.generateResponse(result.get("error"), HttpStatus.NOT_FOUND);
+        }
+        return ResponseHandler.generateResponse(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -87,8 +91,12 @@ public class ToDoController {
      * @return A ToDo object
      */
     @PutMapping(path = "{id}")
-    public ToDo updateToDoById(@PathVariable("id") UUID id, @RequestBody @Valid ToDo toDo) {
-        return toDoService.updateToDo(id, toDo);
+    public ResponseEntity<Object> updateToDoById(@PathVariable("id") UUID id, @RequestBody @Valid ToDo toDo) {
+        Map<String,Object> result = toDoService.updateToDo(id, toDo);
+        if (result.get("todo") == null) {
+            return ResponseHandler.generateResponse(result.get("error"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.OK);
     }
 
     /**
@@ -98,8 +106,12 @@ public class ToDoController {
      * @return ToDo
      */
     @PostMapping(path = "{id}/done")
-    public ToDo setToDoAsDone(@PathVariable("id") UUID id) {
-        return toDoService.setToDoAsDone(id);
+    public ResponseEntity<Object> setToDoAsDone(@PathVariable("id") UUID id) {
+        Map<String,Object> result = toDoService.setToDoAsDone(id);
+        if (result.get("todo") == null) {
+            return ResponseHandler.generateResponse(result.get("error"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.OK);
     }
 
     /**
@@ -109,8 +121,12 @@ public class ToDoController {
      * @return A ToDo object
      */
     @PostMapping(path = "{id}/undone") 
-    public ToDo setToDoAsUndone(@PathVariable("id") UUID id) {
-        return toDoService.setToDoAsUndone(id);
+    public ResponseEntity<Object> setToDoAsUndone(@PathVariable("id") UUID id) {
+        Map<String,Object> result = toDoService.setToDoAsUndone(id);
+        if (result.get("todo") == null) {
+            return ResponseHandler.generateResponse(result.get("error"), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseHandler.generateResponse(result.get("todo"), HttpStatus.OK);
     }
 
     /**
