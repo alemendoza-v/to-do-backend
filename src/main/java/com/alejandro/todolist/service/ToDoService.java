@@ -81,6 +81,12 @@ public class ToDoService {
      * @return A map with a key of "todo" and a value of the updated todo object.
      */
     public Map<String,Object> updateToDo(UUID id, ToDo toDo) {
+        if(toDo.getText().length() > 120 || toDo.getText().equals("")) {
+            Map<String,Object> responseMap = new HashMap<String, Object>();
+                responseMap.put("error", "Please provide a valid to do name");
+                responseMap.put("todo", null);
+                return responseMap;
+        }
         ToDo updatedToDo = toDoRepo.updateToDoById(id, toDo);
         Map<String,Object> responseMap = new HashMap<String, Object>();
         if (updatedToDo == null) {
