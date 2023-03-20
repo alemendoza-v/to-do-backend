@@ -11,7 +11,7 @@ import com.alejandro.todolist.model.ToDo;
  */
 public class SortByDueDatePriority implements SortingInterface {
     private Comparator<ToDo> priorityComparator = Comparator.comparing(ToDo::getPriority);
-    // private Comparator<ToDo> comp = Comparator.nullsLast(Comparator.comparing(ToDo::getDueDate)).thenComparing(priorityComparator);
+
     private Comparator<ToDo> dueDateDescPriorityDesc = Comparator.comparing(
                                                         ToDo::getDueDate, 
                                                         Comparator.nullsLast(Comparator.reverseOrder()))
@@ -36,7 +36,6 @@ public class SortByDueDatePriority implements SortingInterface {
         
         if (dueDateOrdering.equals("desc") && priorityOrdering.equals("desc")) {
             return sortList(toDos, dueDateDescPriorityDesc);
-            // return sortList(toDos, new ToDoComparator());
         } else if (dueDateOrdering.equals("asc") && priorityOrdering.equals("desc")) {
             return sortList(toDos, dueDateAscPriorityDesc);
         } else if (dueDateOrdering.equals("desc") && priorityOrdering.equals("asc")) {

@@ -1,4 +1,4 @@
-package com.alejandro.todolist.dao;
+package com.alejandro.todolist.repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,18 +22,17 @@ import java.time.temporal.ChronoUnit;
 import com.alejandro.todolist.Factory.SortingFactory;
 
 @Repository("dao")
-public class ToDoDataAccessService implements ToDoDao{
+public class ToDoRepositoryImpl implements ToDoRepository{
     private static List<ToDo> DB = new ArrayList<>();
 
     @Autowired
     private SortingFactory sortingFactory;
 
     /**
-     * If the text of the todo is empty, return an error. Otherwise, if the todo already exists, return
-     * an error. Otherwise, add the todo to the database and return the todo
+     * If the todo text is not a duplicate, add it to the DB and return the todo
      * 
-     * @param toDo The todo object that is passed in from the client.
-     * @return A map with a key of "todo" and a value of the new todo object.
+     * @param toDo The to do object that is being created.
+     * @return A map with a key of "todo" and a value of the todo object.
      */
     @Override
     public Map<String,Object> createToDo(ToDo toDo) {
@@ -167,6 +166,7 @@ public class ToDoDataAccessService implements ToDoDao{
      * @param priority the priority of the todo as an int
      * @param page The page number to return.
      * @return A map with the following keys:
+     * - pages: the amount of available pages
      * - prev: the url for the previous page
      * - next: the url for the next page
      * - todos: a list of todos
@@ -233,7 +233,7 @@ public class ToDoDataAccessService implements ToDoDao{
      * Return the first ToDo in the DB that has the same ID as the ID passed in.
      * 
      * @param id The id of the ToDo to retrieve.
-     * @return Optional<ToDo>
+     * @return A Optional<ToDo> object, it will be null if the to-do doesn't exist.
      */
     @Override
     public Optional<ToDo> getToDoById(UUID id) {
@@ -280,7 +280,7 @@ public class ToDoDataAccessService implements ToDoDao{
      * > If the ToDo with the given id exists, set it as done and return it. Otherwise, return null
      * 
      * @param id The id of the ToDo to be set as done.
-     * @return A ToDo object
+     * @return A updated ToDo object
      */
     @Override 
     public ToDo setToDoAsDone(UUID id) {
@@ -297,7 +297,7 @@ public class ToDoDataAccessService implements ToDoDao{
      * If the to-do exists, set it as undone and return it, otherwise return null.
      * 
      * @param id The id of the ToDo to be updated.
-     * @return A ToDo object
+     * @return A updated ToDo object
      */
     @Override
     public ToDo setToDoAsUndone(UUID id) {
