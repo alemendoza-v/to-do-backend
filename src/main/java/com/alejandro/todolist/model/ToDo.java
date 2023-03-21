@@ -1,19 +1,18 @@
 package com.alejandro.todolist.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 
 public class ToDo {
     private UUID id;
-
+    
     @NotBlank
     private String text;
 
@@ -23,19 +22,24 @@ public class ToDo {
     private boolean isDone;
 
     @Nullable
-    private LocalDate doneDate;
+    private LocalDateTime doneDate;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
+    @Nonnull
     private int priority;
 
     // Constructors
-    public ToDo(UUID id, String text, int priority) {
-        this.id = id;
+    public ToDo(@JsonProperty("text") String text, 
+                @JsonProperty("priority") int priority,
+                @JsonProperty("dueDate") LocalDate dueDate) {
+        this.id = UUID.randomUUID();
         this.text = text;
-        this.priority = priority;
+        this.dueDate = dueDate;
         this.isDone = false;
-        this.createdAt = LocalDate.now();
+        this.doneDate = null;
+        this.createdAt = LocalDateTime.now();
+        this.priority = priority;
     }
 
     // Getters
@@ -55,15 +59,35 @@ public class ToDo {
         return isDone;
     }
 
-    public LocalDate getDoneDate() {
+    public LocalDateTime getDoneDate() {
         return doneDate;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public int getPriority() {
         return priority;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
+    public void setDoneDate(LocalDateTime doneDate) {
+        this.doneDate = doneDate;
     }
 }
