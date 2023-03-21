@@ -16,7 +16,7 @@ public interface ToDoRepository {
 
     void deleteToDo(ToDo toDo);
 
-    ToDo updateToDoById(UUID id, ToDo newToDo);
+    Map<String,Object> updateToDoById(UUID id, ToDo newToDo);
 
     ToDo setToDoAsDone(UUID id);
 

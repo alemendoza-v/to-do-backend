@@ -87,10 +87,10 @@ public class ToDoService {
                 responseMap.put("todo", null);
                 return responseMap;
         }
-        ToDo updatedToDo = toDoRepo.updateToDoById(id, toDo);
+        Map<String,Object> updatedToDo = toDoRepo.updateToDoById(id, toDo);
         Map<String,Object> responseMap = new HashMap<String, Object>();
-        if (updatedToDo == null) {
-                responseMap.put("error", "To do could not be updated");
+        if (updatedToDo.get("todo") == null) {
+                responseMap.put("error", updatedToDo.get("error"));
                 responseMap.put("todo", null);
                 return responseMap;
         }

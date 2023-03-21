@@ -261,19 +261,35 @@ public class ToDoRepositoryImpl implements ToDoRepository{
      * @return The ToDo object that was updated.
      */
     @Override
-    public ToDo updateToDoById(UUID id, ToDo newToDo) {
-        return getToDoById(id)
-                .map(toDo -> {
-                    int indexOfToDo = DB.indexOf(toDo);
-                    if (indexOfToDo >= 0) {
-                        toDo.setText(newToDo.getText());
-                        toDo.setPriority(newToDo.getPriority());
-                        toDo.setDueDate(newToDo.getDueDate());
-                        return toDo;
-                    }
-                    return null;
-                })
-                .orElse(null);
+    public Map<String,Object> updateToDoById(UUID id, ToDo newToDo) {
+        Predicate<ToDo> byName = t -> StringUtils.containsIgnoreCase(t.getText(), newToDo.getText());
+        List<ToDo> filteredList = filter(byName, DB);
+        Map<String,Object> responseMap = new HashMap<String, Object>();
+        
+        ToDo toDo = getToDoById(id)
+                    .map(t -> {
+                        int indexOfToDo = DB.indexOf(t);
+                        if (indexOfToDo >= 0) {
+                            t.setText(newToDo.getText());
+                            t.setPriority(newToDo.getPriority());
+                            t.setDueDate(newToDo.getDueDate());
+                            return t;
+                        }
+                        return null;
+                    })
+                    .orElse(null);
+
+        for(ToDo t : filteredList ) {
+            if(t.getText().equals(newToDo.getText()) && t.getId() != toDo.getId()) {
+                // Duplicate found
+                String error = "No duplicate to dos are allowed";
+                responseMap.put("error", error);
+                responseMap.put("todo", null);
+                return responseMap;
+            }
+        }
+        responseMap.put("todo", toDo);
+        return responseMap;
     }
 
     /**
